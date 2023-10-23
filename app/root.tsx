@@ -12,6 +12,7 @@ import { withEmotionCache } from '@emotion/react';
 
 import ClientStyleContext from '~/styles/client.context';
 import ServerStyleContext from '~/styles/server.context';
+import { TestContext } from '~/test.context';
 
 export const meta: MetaFunction = () => ([{
 	charset: 'utf-8',
@@ -62,7 +63,9 @@ const Document = withEmotionCache(
 				))}
 			</head>
 			<body>
-			{children}
+			<TestContext.Provider value="some value">
+				{children}
+			</TestContext.Provider>
 			<ScrollRestoration/>
 			<Scripts/>
 			<LiveReload/>

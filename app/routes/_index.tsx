@@ -1,5 +1,6 @@
 import type { MetaFunction } from '@remix-run/node';
 import styled from '@emotion/styled';
+import { TestContext } from '~/test.context';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -11,8 +12,14 @@ export const meta: MetaFunction = () => {
 export default function Index() {
 	return (
 		<div>
-			<StyledH1>OICT Remix Test</StyledH1>
-			<Paragraph>Tato stránka byla vykreslena na straně serveru za pomoci CSS-in-JS knihovny Emotion.js</Paragraph>
+			<TestContext.Consumer>
+				{value =>
+					<>
+						<StyledH1>{value}</StyledH1>
+						<Paragraph>Tato stránka byla vykreslena na straně serveru za pomoci CSS-in-JS knihovny Emotion.js</Paragraph>
+					</>
+				}
+			</TestContext.Consumer>
 		</div>
 	);
 }
