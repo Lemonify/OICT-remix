@@ -60,6 +60,9 @@ const Document = withEmotionCache(
 				{title ? <title>{title}</title> : null}
 				<Meta/>
 				<Links/>
+				{typeof document === "undefined"
+					? "__STYLES__"
+					: null}
 				{serverStyleData?.map(({ key, ids, css }) => (
 					<style
 						key={key}

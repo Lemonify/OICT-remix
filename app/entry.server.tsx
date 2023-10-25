@@ -1,11 +1,11 @@
-import { CacheProvider } from '@emotion/react';
-import createEmotionServer from '@emotion/server/create-instance';
 import type { AppLoadContext, EntryContext } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
 import { renderToString } from 'react-dom/server';
-
-import createEmotionCache from '~/styles/createEmotionCache';
-import ServerStyleContext from '~/styles/server.context';
+import { ServerStyleSheet } from 'styled-components';
+// import createEmotionServer from '@emotion/server/create-instance';
+// import createEmotionCache from '~/styles/createEmotionCache';
+// import ServerStyleContext from '~/styles/server.context';
+// import { CacheProvider } from '@emotion/react';
 
 export default function handleRequest(
 	request: Request,
@@ -14,26 +14,30 @@ export default function handleRequest(
 	remixContext: EntryContext,
 	loadContext: AppLoadContext,
 ) {
-	const cache = createEmotionCache();
-	const { extractCriticalToChunks } = createEmotionServer(cache);
+	// EMOTION.JS
+	// const cache = createEmotionCache();
+	// const { extractCriticalToChunks } = createEmotionServer(cache);
 
-	const html = renderToString(
-		<ServerStyleContext.Provider value={null}>
-			<CacheProvider value={cache}>
-				<RemixServer context={remixContext} url={request.url}/>
-			</CacheProvider>
-		</ServerStyleContext.Provider>,
+	// const html = renderToString(
+	// 	<ServerStyleContext.Provider value={null}>
+	// 		<CacheProvider value={cache}>
+	// 			<RemixServer context={remixContext} url={request.url}/>
+	// 		</CacheProvider>
+	// 	</ServerStyleContext.Provider>,
+	// );
+
+	const sheet = new ServerStyleSheet();
+	let markup = renderToString(
+		sheet.collectStyles(
+			<RemixServer
+				context={remixContext}
+				url={request.url}
+			/>
+		)
 	);
 
-	const chunks = extractCriticalToChunks(html);
-
-	const markup = renderToString(
-		<ServerStyleContext.Provider value={chunks.styles}>
-			<CacheProvider value={cache}>
-				<RemixServer context={remixContext} url={request.url}/>
-			</CacheProvider>
-		</ServerStyleContext.Provider>,
-	);
+	const styles = sheet.getStyleTags();
+	markup = markup.replace('__STYLES__', styles);
 
 	responseHeaders.set('Content-Type', 'text/html');
 

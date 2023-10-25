@@ -1,5 +1,5 @@
 import type { MetaFunction } from '@remix-run/node';
-import styled from '@emotion/styled';
+import { styled } from 'styled-components';
 import { TestContext } from '~/test.context';
 import { Card } from '@oict/standard-design-prague';
 
