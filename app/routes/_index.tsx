@@ -1,6 +1,7 @@
 import type { MetaFunction } from '@remix-run/node';
 import styled from '@emotion/styled';
 import { TestContext } from '~/test.context';
+import { Card } from '@oict/standard-design-prague';
 
 export const meta: MetaFunction = () => {
 	return [
@@ -14,10 +15,10 @@ export default function Index() {
 		<div>
 			<TestContext.Consumer>
 				{value =>
-					<>
+					<StyledCard>
 						<StyledH1>{value}</StyledH1>
 						<Paragraph>Tato stránka byla vykreslena na straně serveru za pomoci CSS-in-JS knihovny Emotion.js</Paragraph>
-					</>
+					</StyledCard>
 				}
 			</TestContext.Consumer>
 		</div>
@@ -33,3 +34,7 @@ const StyledH1 = styled.h1`
 const Paragraph = styled.p`
 	font-family: sans-serif;
 `;
+
+const StyledCard = styled(Card)`
+	box-shadow: 0 0 50px black;
+` as typeof Card;

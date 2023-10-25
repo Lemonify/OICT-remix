@@ -7,18 +7,24 @@ import {
 	ScrollRestoration,
 } from '@remix-run/react';
 import React, { useContext, useEffect, useRef } from 'react';
-import type { MetaFunction } from '@remix-run/node';
+import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import { withEmotionCache } from '@emotion/react';
 
 import ClientStyleContext from '~/styles/client.context';
 import ServerStyleContext from '~/styles/server.context';
 import { TestContext } from '~/test.context';
+import { StandardDesignProvider } from '@oict/standard-design-prague';
+import styles from '@oict/standard-design-prague/dist/index.css';
 
 export const meta: MetaFunction = () => ([{
 	charset: 'utf-8',
 	title: 'OICT Remix Test',
 	viewport: 'width=device-width,initial-scale=1',
 }]);
+
+export const links: LinksFunction = () => [
+	{ rel: "stylesheet", href: styles },
+];
 
 interface DocumentProps {
 	children: React.ReactNode;
@@ -63,9 +69,11 @@ const Document = withEmotionCache(
 				))}
 			</head>
 			<body>
-			<TestContext.Provider value="some value">
-				{children}
-			</TestContext.Provider>
+			<StandardDesignProvider>
+				<TestContext.Provider value="some value">
+					{children}
+				</TestContext.Provider>
+			</StandardDesignProvider>
 			<ScrollRestoration/>
 			<Scripts/>
 			<LiveReload/>
